@@ -53,18 +53,24 @@ class TabelaHash:
         return None
 
 
-    def excluir(self, cpf):                # Método para excluir pessoa
-        indice = self.funcao_hash(cpf)     # Calcula índice usando hash
+    def excluir(self, cpf):
+        indice = self.funcao_hash(cpf)
         
-        for i, pessoa in enumerate(self.tabela[indice]):  # Percorre lista com índice
-            if pessoa.cpf == cpf:           # Se encontrou a pessoa
-                pessoa_removida = self.tabela[indice].pop(i)  # Remove da lista
-                self.total_registros -= 1   # Decrementa contador de registros
+        for i, pessoa in enumerate(self.tabela[indice]):
+            if pessoa.cpf == cpf:
+                pessoa_removida = self.tabela[indice].pop(i)
+                self.total_registros -= 1
                 print(f"Pessoa {pessoa_removida.nome} removida com sucesso!")
-                return True
+
+                # 🔽 Ajuste do contador de colisões
+                if len(self.tabela[indice]) == 1:
+                    self.colisoes -= 1
+
+                return True   # <-- agora sim, só depois de ajustar
         
         print("Pessoa não encontrada para exclusão!")
         return False
+
     
     def imprimir_tabela(self):             # Método para imprimir tabela completa
         print("\n" + "="*60)
